@@ -5,14 +5,16 @@ import { lightTheme, darkTheme } from '../theme/theme';
 const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState(lightTheme);
+  const [themeMode, setThemeMode] = useState('light');
+
+  const theme = themeMode === 'light' ? lightTheme : darkTheme;
 
   const toggleTheme = () => {
-    setTheme(theme.mode === 'light' ? darkTheme : lightTheme);
+    setThemeMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, themeMode, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );

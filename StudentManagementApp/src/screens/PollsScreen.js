@@ -1,11 +1,23 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 
-const quizQuestion = {
-  question: "What is the capital of Finland?",
-  options: ["Stockholm", "Helsinki", "Oslo", "Copenhagen"],
-  correctAnswer: "Helsinki",
-};
+const quizQuestions = [
+  {
+    question: "What is the capital of Finland?",
+    options: ["Stockholm", "Helsinki", "Oslo", "Copenhagen"],
+    correctAnswer: "Helsinki",
+  },
+  {
+    question: "What is the largest planet in our solar system?",
+    options: ["Earth", "Mars", "Jupiter", "Saturn"],
+    correctAnswer: "Jupiter",
+  },
+  {
+    question: "Which language is primarily used for Android development?",
+    options: ["Swift", "Kotlin", "Python", "JavaScript"],
+    correctAnswer: "Kotlin",
+  },
+];
 
 const leaderboardData = [
   { id: '1', name: 'Anu', score: 10 },
@@ -14,15 +26,41 @@ const leaderboardData = [
 ];
 
 const PollsScreen = () => {
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selected, setSelected] = useState(null);
   const [feedback, setFeedback] = useState('');
+  const [correctCount, setCorrectCount] = useState(0);
+
+  const currentQuestion = quizQuestions[currentQuestionIndex];
 
   const handleOptionPress = (option) => {
     setSelected(option);
-    if (option === quizQuestion.correctAnswer) {
+    if (option === currentQuestion.correctAnswer) {
+      setCorrectCount(prev => prev + 1);
       setFeedback('✅ Correct! Great job!');
     } else {
-      setFeedback('❌ Oops! Try again tomorrow.');
+      setFeedback('❌ Oops! Restarting quiz...');
+      setTimeout(() => {
+        setCurrentQuestionIndex(0);
+        setSelected(null);
+        setFeedback('');
+        setCorrectCount(0);
+      }, 1500);
+    }
+  };
+
+  const handleNextQuestion = () => {
+    const nextIndex = currentQuestionIndex + 1;
+    if (nextIndex < quizQuestions.length) {
+      setCurrentQuestionIndex(nextIndex);
+      setSelected(null);
+      setFeedback('');
+    } else {
+      if (correctCount === quizQuestions.length) {
+        setFeedback('🎉 Congratulations! You got all answers correct!');
+      } else {
+        setFeedback('✅ Quiz Completed. Great effort!');
+      }
     }
   };
 
@@ -36,14 +74,14 @@ const PollsScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>🧠 Daily Quiz</Text>
-      <Text style={styles.question}>{quizQuestion.question}</Text>
+      <Text style={styles.question}>{currentQuestion.question}</Text>
 
-      {quizQuestion.options.map((option, index) => (
+      {currentQuestion.options.map((option, index) => (
         <TouchableOpacity
           key={index}
           style={[
             styles.optionButton,
-            selected === option && (option === quizQuestion.correctAnswer
+            selected === option && (option === currentQuestion.correctAnswer
               ? styles.correct
               : styles.incorrect)
           ]}
@@ -55,6 +93,12 @@ const PollsScreen = () => {
       ))}
 
       {feedback ? <Text style={styles.feedback}>{feedback}</Text> : null}
+
+      {selected !== null && currentQuestionIndex < quizQuestions.length && feedback.indexOf('Restarting') === -1 && (
+        <TouchableOpacity style={styles.nextButton} onPress={handleNextQuestion}>
+          <Text style={styles.nextButtonText}>Next Question ➡️</Text>
+        </TouchableOpacity>
+      )}
 
       <Text style={styles.subTitle}>🏆 Leaderboard</Text>
       <FlatList
@@ -106,6 +150,18 @@ const styles = StyleSheet.create({
     color: '#FFD700',
     fontWeight: '600',
     textAlign: 'center'
+  },
+  nextButton: {
+    backgroundColor: '#FFC107',
+    padding: 12,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginVertical: 10
+  },
+  nextButtonText: {
+    color: '#000',
+    fontSize: 16,
+    fontWeight: 'bold'
   },
   subTitle: {
     fontSize: 18,

@@ -1,19 +1,38 @@
-// src/screens/ProfileScreen.js
-import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import {
+  View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, Alert
+} from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 
 export default function ProfileScreen() {
+  const [avatar, setAvatar] = useState('https://i.pravatar.cc/150?img=65');
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setAvatar(result.assets[0].uri);
+    }
+  };
+
   const user = {
     name: 'Pujan Modi',
     email: 'pujan.modi@example.com',
     role: 'Student',
-    avatar: 'https://i.pravatar.cc/150?img=65', // You can swap this with real image URLs
   };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Image source={{ uri: user.avatar }} style={styles.avatar} />
+      <TouchableOpacity onPress={pickImage}>
+        <Image source={{ uri: avatar }} style={styles.avatar} />
+        <Text style={styles.changeText}>Tap to change avatar</Text>
+      </TouchableOpacity>
+
       <Text style={styles.name}>{user.name}</Text>
       <Text style={styles.email}>{user.email}</Text>
       <Text style={styles.role}>{user.role}</Text>
@@ -48,7 +67,13 @@ const styles = StyleSheet.create({
     borderRadius: 60,
     borderWidth: 3,
     borderColor: '#4ECDC4',
-    marginBottom: 20,
+    marginBottom: 8,
+  },
+  changeText: {
+    fontSize: 13,
+    color: '#888',
+    marginBottom: 15,
+    textAlign: 'center',
   },
   name: {
     fontSize: 22,

@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   FlatList,
   useColorScheme,
+  ImageBackground
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons, Ionicons, FontAwesome5 } from '@expo/vector-icons';
@@ -43,27 +44,41 @@ export default function DashboardScreen() {
   );
 
   return (
-    <SafeAreaView
-      style={[styles.container, { backgroundColor: theme ? '#121212' : '#f0f0f0' }]}
+    <ImageBackground
+      source={require('../../assets/bg-creative.png')} 
+      style={{ flex: 1 }}
+      resizeMode="cover"
     >
-      <View style={styles.header}>
-        <Text style={[styles.title, { color: theme ? '#fff' : '#222' }]}>📚 Dashboard</Text>
-        <Switch
-          value={isDark}
-          onValueChange={() => setIsDark(!isDark)}
-          color="#4ECDC4"
-        />
-      </View>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: theme ? '#121212cc' : '#f5f5f5cc' }]}
+      >
+        <View style={styles.header}>
+          <Text style={[styles.title, { color: theme ? '#fff' : '#222' }]}>📚 Dashboard</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Ionicons
+              name={theme ? 'moon' : 'sunny'}
+              size={22}
+              color={theme ? '#fff' : '#000'}
+              style={{ marginRight: 6 }}
+            />
+            <Switch
+              value={isDark}
+              onValueChange={() => setIsDark(!isDark)}
+              color="#4ECDC4"
+            />
+          </View>
+        </View>
 
-      <FlatList
-        data={features}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.title}
-        numColumns={2}
-        contentContainerStyle={styles.grid}
-        columnWrapperStyle={{ justifyContent: 'space-between' }}
-      />
-    </SafeAreaView>
+        <FlatList
+          data={features}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.title}
+          numColumns={2}
+          contentContainerStyle={styles.grid}
+          columnWrapperStyle={{ justifyContent: 'space-between' }}
+        />
+      </SafeAreaView>
+    </ImageBackground>
   );
 }
 
