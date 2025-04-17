@@ -1,4 +1,3 @@
-// src/screens/LoginScreen.js
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -9,12 +8,8 @@ export default function LoginScreen({ navigation }) {
   const [showPass, setShowPass] = useState(false);
 
   const handleLogin = () => {
-    navigation.navigate('Dashboard'); // ✅ Make sure 'Dashboard' is defined in Stack.Navigator
+    navigation.replace('Dashboard');
   };
-  
-  <TouchableOpacity style={styles.button} onPress={handleLogin}>
-    <Text style={styles.buttonText}>Log In</Text>
-  </TouchableOpacity>
 
   return (
     <KeyboardAvoidingView

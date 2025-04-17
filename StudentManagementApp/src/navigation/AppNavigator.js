@@ -1,7 +1,6 @@
-// src/navigation/AppNavigator.js
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useNavigation } from '@react-navigation/native';
+
 // Screens
 import LoginScreen from '../screens/LoginScreen';
 import DashboardScreen from '../screens/DashboardScreen';
@@ -12,6 +11,10 @@ import ExamResultsScreen from '../screens/ExamResultsScreen';
 import AttendanceScreen from '../screens/AttendanceScreen';
 import HolidayListScreen from '../screens/HolidayListScreen';
 import NoticeScreen from '../screens/NoticeScreen';
+import ProgressDashboardScreen from '../screens/ProgressDashboardScreen';
+import PollsScreen from '../screens/PollsScreen';
+import InteractiveCalendarScreen from '../screens/InteractiveCalendarScreen';
+import ChatReactionScreen from '../screens/ChatReactionScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +30,10 @@ const AppNavigator = () => {
       <Stack.Screen name="Attendance" component={AttendanceScreen} />
       <Stack.Screen name="HolidayList" component={HolidayListScreen} />
       <Stack.Screen name="Notices" component={NoticeScreen} />
+      <Stack.Screen name="Progress" component={ProgressDashboardScreen} />
+      <Stack.Screen name="Polls" component={PollsScreen} />
+      <Stack.Screen name="Calendar" component={InteractiveCalendarScreen} />
+      <Stack.Screen name="Chat" component={ChatReactionScreen} />
     </Stack.Navigator>
   );
 };

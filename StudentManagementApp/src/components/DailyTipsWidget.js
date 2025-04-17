@@ -1,3 +1,4 @@
+// src/screens/DashboardScreen.js
 import React, { useState } from 'react';
 import {
   View,
@@ -13,17 +14,72 @@ import { Switch } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 
 const features = [
-  { title: 'Profile', screen: 'Profile', icon: <MaterialIcons name="person" size={32} color="#fff" />, bg: '#FF6B6B' },
-  { title: 'Attendance', screen: 'Attendance', icon: <FontAwesome5 name="calendar-check" size={28} color="#fff" />, bg: '#4ECDC4' },
-  { title: 'Exams', screen: 'ExamResults', icon: <MaterialIcons name="school" size={32} color="#fff" />, bg: '#FFD93D' },
-  { title: 'Messages', screen: 'Messages', icon: <Ionicons name="chatbubble-ellipses" size={30} color="#fff" />, bg: '#1A535C' },
-  { title: 'Timetable', screen: 'Timetable', icon: <MaterialIcons name="calendar-today" size={30} color="#fff" />, bg: '#FF9F1C' },
-  { title: 'Holidays', screen: 'HolidayList', icon: <MaterialIcons name="beach-access" size={30} color="#fff" />, bg: '#2EC4B6' },
-  { title: 'Notices', screen: 'Notices', icon: <Ionicons name="notifications" size={30} color="#fff" />, bg: '#6A4C93' },
-  { title: 'Progress', screen: 'Progress', icon: <MaterialIcons name="bar-chart" size={30} color="#fff" />, bg: '#8E44AD' },
-  { title: 'Polls', screen: 'Polls', icon: <Ionicons name="help-circle" size={30} color="#fff" />, bg: '#00B894' },
-  { title: 'Calendar', screen: 'Calendar', icon: <MaterialIcons name="event" size={30} color="#fff" />, bg: '#F39C12' },
-  { title: 'Chat', screen: 'Chat', icon: <Ionicons name="chatbox-ellipses" size={30} color="#fff" />, bg: '#E74C3C' },
+  {
+    title: 'Profile',
+    screen: 'Profile',
+    icon: <MaterialIcons name="person" size={32} color="#fff" />,
+    bg: '#FF6B6B',
+  },
+  {
+    title: 'Attendance',
+    screen: 'Attendance',
+    icon: <FontAwesome5 name="calendar-check" size={28} color="#fff" />,
+    bg: '#4ECDC4',
+  },
+  {
+    title: 'Exams',
+    screen: 'ExamResults',
+    icon: <MaterialIcons name="school" size={32} color="#fff" />,
+    bg: '#FFD93D',
+  },
+  {
+    title: 'Messages',
+    screen: 'Messages',
+    icon: <Ionicons name="chatbubble-ellipses" size={30} color="#fff" />,
+    bg: '#1A535C',
+  },
+  {
+    title: 'Timetable',
+    screen: 'Timetable',
+    icon: <MaterialIcons name="calendar-today" size={30} color="#fff" />,
+    bg: '#FF9F1C',
+  },
+  {
+    title: 'Holidays',
+    screen: 'HolidayList',
+    icon: <MaterialIcons name="beach-access" size={30} color="#fff" />,
+    bg: '#2EC4B6',
+  },
+  {
+    title: 'Notices',
+    screen: 'Notices',
+    icon: <Ionicons name="notifications" size={30} color="#fff" />,
+    bg: '#6A4C93',
+  },
+  {
+    title: 'Progress',
+    screen: 'Progress',
+    icon: <MaterialIcons name="bar-chart" size={30} color="#fff" />,
+    bg: '#8E44AD',
+  },
+  {
+    title: 'Polls',
+    screen: 'Polls',
+    icon: <Ionicons name="help-circle" size={30} color="#fff" />,
+    bg: '#00B894',
+  },
+  {
+    title: 'Calendar',
+    screen: 'Calendar',
+    icon: <MaterialIcons name="event" size={30} color="#fff" />,
+    bg: '#F39C12',
+  },
+  {
+    title: 'Chat',
+    screen: 'Chat',
+    icon: <Ionicons name="chatbox-ellipses" size={30} color="#fff" />,
+    bg: '#E74C3C',
+  },
 ];
 
 export default function DashboardScreen() {
@@ -47,7 +103,9 @@ export default function DashboardScreen() {
       style={[styles.container, { backgroundColor: theme ? '#121212' : '#f0f0f0' }]}
     >
       <View style={styles.header}>
-        <Text style={[styles.title, { color: theme ? '#fff' : '#222' }]}>📚 Dashboard</Text>
+        <Text style={[styles.title, { color: theme ? '#fff' : '#222' }]}>
+          📚 Dashboard
+        </Text>
         <Switch
           value={isDark}
           onValueChange={() => setIsDark(!isDark)}
