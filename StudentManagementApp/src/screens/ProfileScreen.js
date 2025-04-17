@@ -1,70 +1,98 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import Student from '../models/Student';
+// src/screens/ProfileScreen.js
+import React from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 
 export default function ProfileScreen() {
-  const [student, setStudent] = useState(null);
-
-  useEffect(() => {
-    const fetchedStudent = new Student(
-      1,
-      'John Doe',
-      'john.doe@student.edu',
-      '10A',
-      42
-    );
-    setStudent(fetchedStudent);
-  }, []);
-
-  if (!student) {
-    return <Text style={styles.loading}>Loading profile...</Text>;
-  }
+  const user = {
+    name: 'Pujan Modi',
+    email: 'pujan.modi@example.com',
+    role: 'Student',
+    avatar: 'https://i.pravatar.cc/150?img=65', // You can swap this with real image URLs
+  };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>👤 Student Profile</Text>
+    <ScrollView contentContainerStyle={styles.container}>
+      <Image source={{ uri: user.avatar }} style={styles.avatar} />
+      <Text style={styles.name}>{user.name}</Text>
+      <Text style={styles.email}>{user.email}</Text>
+      <Text style={styles.role}>{user.role}</Text>
+
       <View style={styles.card}>
-        <Text style={styles.info}>Name: <Text style={styles.bold}>{student.name}</Text></Text>
-        <Text style={styles.info}>Email: <Text style={styles.bold}>{student.email}</Text></Text>
-        <Text style={styles.info}>Class: <Text style={styles.bold}>{student.className}</Text></Text>
-        <Text style={styles.info}>Roll No: <Text style={styles.bold}>{student.rollNo}</Text></Text>
+        <MaterialIcons name="phone" size={24} color="#1A535C" />
+        <Text style={styles.cardText}>+358 123 456 789</Text>
       </View>
-    </View>
+
+      <View style={styles.card}>
+        <Ionicons name="location" size={24} color="#1A535C" />
+        <Text style={styles.cardText}>Turku, Finland</Text>
+      </View>
+
+      <TouchableOpacity style={styles.button}>
+        <Text style={styles.buttonText}>Edit Profile</Text>
+      </TouchableOpacity>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: '#f9fafb' },
-  heading: {
-    fontSize: 24,
-    fontWeight: 'bold',
+  container: {
+    alignItems: 'center',
+    paddingTop: 50,
+    paddingBottom: 80,
+    backgroundColor: '#E8F0F2',
+  },
+  avatar: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    borderWidth: 3,
+    borderColor: '#4ECDC4',
     marginBottom: 20,
-    textAlign: 'center',
-    color: '#1e293b',
+  },
+  name: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#1A535C',
+  },
+  email: {
+    fontSize: 16,
+    color: '#555',
+    marginTop: 4,
+  },
+  role: {
+    fontSize: 14,
+    color: '#888',
+    marginBottom: 20,
   },
   card: {
-    backgroundColor: '#ffffff',
-    padding: 25,
-    borderRadius: 16,
-    elevation: 4,
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    width: '85%',
+    padding: 15,
+    borderRadius: 15,
+    marginVertical: 8,
+    alignItems: 'center',
     shadowColor: '#000',
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.05,
     shadowRadius: 5,
+    elevation: 3,
   },
-  info: {
-    fontSize: 18,
-    marginBottom: 10,
-    color: '#334155',
+  cardText: {
+    fontSize: 16,
+    marginLeft: 15,
+    color: '#222',
   },
-  bold: {
+  button: {
+    marginTop: 30,
+    backgroundColor: '#1A535C',
+    paddingVertical: 12,
+    paddingHorizontal: 30,
+    borderRadius: 12,
+  },
+  buttonText: {
+    color: '#fff',
     fontWeight: '600',
-    color: '#0f172a',
-  },
-  loading: {
-    flex: 1,
-    textAlign: 'center',
-    marginTop: 100,
-    fontSize: 18,
-    color: '#999',
+    fontSize: 16,
   },
 });

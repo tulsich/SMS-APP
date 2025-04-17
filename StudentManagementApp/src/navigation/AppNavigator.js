@@ -1,7 +1,7 @@
 // src/navigation/AppNavigator.js
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
+import { useNavigation } from '@react-navigation/native';
 // Screens
 import LoginScreen from '../screens/LoginScreen';
 import DashboardScreen from '../screens/DashboardScreen';
@@ -10,7 +10,8 @@ import TimetableScreen from '../screens/TimetableScreen';
 import MessagesScreen from '../screens/MessagesScreen';
 import ExamResultsScreen from '../screens/ExamResultsScreen';
 import AttendanceScreen from '../screens/AttendanceScreen';
-import HolidayListScreen from '../screens/HolidayListScreen'; // ✅ Final addition
+import HolidayListScreen from '../screens/HolidayListScreen';
+import NoticeScreen from '../screens/NoticeScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,6 +26,7 @@ const AppNavigator = () => {
       <Stack.Screen name="ExamResults" component={ExamResultsScreen} />
       <Stack.Screen name="Attendance" component={AttendanceScreen} />
       <Stack.Screen name="HolidayList" component={HolidayListScreen} />
+      <Stack.Screen name="Notices" component={NoticeScreen} />
     </Stack.Navigator>
   );
 };

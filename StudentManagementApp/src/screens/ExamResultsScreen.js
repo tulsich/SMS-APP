@@ -1,60 +1,82 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
-import ExamResult from '../models/ExamResult';
+// src/screens/ExamResultsScreen.js
+import React from 'react';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
+
+const results = [
+  { subject: 'Mathematics', score: 92 },
+  { subject: 'English', score: 85 },
+  { subject: 'Science', score: 76 },
+  { subject: 'History', score: 88 },
+  { subject: 'Computer Science', score: 95 },
+  { subject: 'Art', score: 67 },
+];
+
+const getBadgeColor = (score) => {
+  if (score >= 90) return '#38b000';
+  if (score >= 75) return '#ffb703';
+  return '#ef476f';
+};
 
 export default function ExamResultsScreen() {
-  const [results, setResults] = useState([]);
-
-  useEffect(() => {
-    const data = [
-      new ExamResult('Math', 88, 100, 'A'),
-      new ExamResult('Science', 76, 100, 'B'),
-      new ExamResult('English', 92, 100, 'A+'),
-      new ExamResult('History', 67, 100, 'C+'),
-    ];
-    setResults(data);
-  }, []);
-
-  const renderItem = ({ item }) => (
-    <View style={styles.card}>
-      <Text style={styles.subject}>{item.subject}</Text>
-      <Text style={styles.score}>
-        Score: <Text style={styles.bold}>{item.score}/{item.total}</Text> ({item.getPercentage()})
-      </Text>
-      <Text style={styles.grade}>Grade: <Text style={styles.gradeTag}>{item.grade}</Text></Text>
-    </View>
-  );
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>📊 Exam Results</Text>
-      <FlatList
-        data={results}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={renderItem}
-        contentContainerStyle={styles.list}
-      />
-    </View>
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.title}>📊 Exam Results</Text>
+      {results.map((res, index) => (
+        <View key={index} style={styles.card}>
+          <View style={styles.cardContent}>
+            <Text style={styles.subject}>{res.subject}</Text>
+            <View
+              style={[styles.badge, { backgroundColor: getBadgeColor(res.score) }]}
+            >
+              <Text style={styles.badgeText}>{res.score}</Text>
+            </View>
+          </View>
+        </View>
+      ))}
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: '#f3f4f6' },
-  heading: { fontSize: 24, fontWeight: 'bold', color: '#1e293b', marginBottom: 20, textAlign: 'center' },
-  list: { paddingBottom: 50 },
+  container: {
+    padding: 16,
+    paddingBottom: 100,
+    backgroundColor: '#F0F4F8',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#1A535C',
+    marginBottom: 20,
+  },
   card: {
-    backgroundColor: '#ffffff',
-    padding: 20,
+    backgroundColor: '#fff',
+    padding: 16,
     borderRadius: 14,
-    marginBottom: 15,
-    elevation: 2,
+    marginBottom: 12,
+    elevation: 3,
     shadowColor: '#000',
     shadowOpacity: 0.05,
-    shadowRadius: 3,
+    shadowRadius: 5,
   },
-  subject: { fontSize: 18, fontWeight: '600', color: '#0f172a' },
-  score: { marginTop: 5, fontSize: 16, color: '#334155' },
-  grade: { marginTop: 5, fontSize: 16, color: '#475569' },
-  gradeTag: { fontWeight: 'bold', color: '#2563eb' },
-  bold: { fontWeight: '600', color: '#111827' },
+  cardContent: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  subject: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#333',
+  },
+  badge: {
+    borderRadius: 20,
+    paddingVertical: 6,
+    paddingHorizontal: 14,
+  },
+  badgeText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
 });

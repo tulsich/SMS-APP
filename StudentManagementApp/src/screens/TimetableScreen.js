@@ -1,47 +1,94 @@
 // src/screens/TimetableScreen.js
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
-import TimetableEntry from '../models/TimetableEntry';
+import React from 'react';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
+
+const timetable = {
+  Monday: [
+    { subject: 'Math', time: '9:00 - 10:00 AM', teacher: 'Mr. Smith' },
+    { subject: 'English', time: '10:15 - 11:15 AM', teacher: 'Ms. Johnson' },
+  ],
+  Tuesday: [
+    { subject: 'Physics', time: '9:00 - 10:00 AM', teacher: 'Dr. Brown' },
+    { subject: 'Chemistry', time: '10:15 - 11:15 AM', teacher: 'Ms. Green' },
+  ],
+  Wednesday: [
+    { subject: 'History', time: '9:00 - 10:00 AM', teacher: 'Mr. Davis' },
+    { subject: 'Biology', time: '10:15 - 11:15 AM', teacher: 'Dr. Wilson' },
+  ],
+  Thursday: [
+    { subject: 'Geography', time: '9:00 - 10:00 AM', teacher: 'Mrs. Adams' },
+    { subject: 'Art', time: '10:15 - 11:15 AM', teacher: 'Ms. Lopez' },
+  ],
+  Friday: [
+    { subject: 'Computer Science', time: '9:00 - 10:00 AM', teacher: 'Mr. Patel' },
+    { subject: 'PE', time: '10:15 - 11:15 AM', teacher: 'Coach Lee' },
+  ],
+};
 
 export default function TimetableScreen() {
-  const [timetable, setTimetable] = useState([]);
-
-  useEffect(() => {
-    const entries = [
-      new TimetableEntry('Monday', 'Math', '9:00', '10:00'),
-      new TimetableEntry('Monday', 'Science', '10:15', '11:15'),
-      new TimetableEntry('Tuesday', 'English', '9:00', '10:00'),
-      new TimetableEntry('Wednesday', 'History', '11:30', '12:30'),
-      new TimetableEntry('Friday', 'Physics', '8:00', '9:00'),
-    ];
-    setTimetable(entries);
-  }, []);
-
-  const renderItem = ({ item }) => (
-    <View style={styles.card}>
-      <Text style={styles.day}>{item.day}</Text>
-      <Text style={styles.subject}>{item.subject}</Text>
-      <Text style={styles.time}>{item.getTimeRange()}</Text>
-    </View>
-  );
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Class Timetable</Text>
-      <FlatList
-        data={timetable}
-        keyExtractor={(_, index) => index.toString()}
-        renderItem={renderItem}
-      />
-    </View>
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.title}>📘 Weekly Timetable</Text>
+      {Object.entries(timetable).map(([day, classes]) => (
+        <View key={day} style={styles.daySection}>
+          <Text style={styles.dayTitle}>{day}</Text>
+          {classes.map((cls, idx) => (
+            <View key={idx} style={styles.classCard}>
+              <Text style={styles.classSubject}>{cls.subject}</Text>
+              <Text style={styles.classTime}>{cls.time}</Text>
+              <Text style={styles.classTeacher}>👨‍🏫 {cls.teacher}</Text>
+            </View>
+          ))}
+        </View>
+      ))}
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20 },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 20, textAlign: 'center' },
-  card: { padding: 15, backgroundColor: '#f5f5f5', borderRadius: 10, marginBottom: 10 },
-  day: { fontWeight: 'bold', fontSize: 16 },
-  subject: { fontSize: 18, marginTop: 5 },
-  time: { color: 'gray', marginTop: 3 },
+  container: {
+    padding: 16,
+    paddingBottom: 100,
+    backgroundColor: '#F8F9FA',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 12,
+    color: '#1A535C',
+  },
+  daySection: {
+    marginBottom: 24,
+  },
+  dayTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#4ECDC4',
+    marginBottom: 10,
+  },
+  classCard: {
+    backgroundColor: '#ffffff',
+    borderRadius: 12,
+    padding: 15,
+    marginBottom: 10,
+    shadowColor: '#000',
+    shadowOpacity: 0.08,
+    shadowRadius: 5,
+    elevation: 3,
+  },
+  classSubject: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#333',
+  },
+  classTime: {
+    fontSize: 14,
+    color: '#888',
+    marginTop: 4,
+  },
+  classTeacher: {
+    fontSize: 14,
+    color: '#555',
+    marginTop: 4,
+  },
 });

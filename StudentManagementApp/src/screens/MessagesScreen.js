@@ -1,47 +1,119 @@
 // src/screens/MessagesScreen.js
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
-import Message from '../models/Message';
+import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  FlatList,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function MessagesScreen() {
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([
+    { id: '1', text: 'Hi there! 👋', fromMe: false },
+    { id: '2', text: 'Hey! How can I help you?', fromMe: true },
+    { id: '3', text: 'Can I get the exam schedule?', fromMe: false },
+  ]);
+  const [input, setInput] = useState('');
 
-  useEffect(() => {
-    const sampleMessages = [
-      new Message(1, 'Principal', 'Welcome to the app!', 'We are excited to have you onboard.', '2025-04-01'),
-      new Message(2, 'Math Teacher', 'Test Reminder', 'Chapter 5 test on Friday.', '2025-04-10'),
-      new Message(3, 'Admin', 'Fee Update', 'New fee schedule uploaded.', '2025-04-12'),
-    ];
-    setMessages(sampleMessages);
-  }, []);
+  const sendMessage = () => {
+    if (input.trim()) {
+      setMessages([...messages, { id: Date.now().toString(), text: input, fromMe: true }]);
+      setInput('');
+    }
+  };
 
   const renderItem = ({ item }) => (
-    <View style={styles.card}>
-      <Text style={styles.title}>{item.title}</Text>
-      <Text style={styles.sender}>From: {item.sender}</Text>
-      <Text style={styles.body}>{item.body}</Text>
-      <Text style={styles.date}>{item.getFormattedDate()}</Text>
+    <View
+      style={[
+        styles.messageBubble,
+        item.fromMe ? styles.fromMe : styles.fromOther,
+      ]}
+    >
+      <Text style={styles.messageText}>{item.text}</Text>
     </View>
   );
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>Messages</Text>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      keyboardVerticalOffset={90}
+    >
       <FlatList
         data={messages}
-        keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.messageList}
       />
-    </View>
+
+      <View style={styles.inputContainer}>
+        <TextInput
+          value={input}
+          onChangeText={setInput}
+          placeholder="Type a message..."
+          placeholderTextColor="#888"
+          style={styles.input}
+        />
+        <TouchableOpacity onPress={sendMessage} style={styles.sendButton}>
+          <Ionicons name="send" size={20} color="#fff" />
+        </TouchableOpacity>
+      </View>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20 },
-  heading: { fontSize: 24, fontWeight: 'bold', marginBottom: 20, textAlign: 'center' },
-  card: { padding: 15, backgroundColor: '#f0f0f0', borderRadius: 10, marginBottom: 15 },
-  title: { fontSize: 18, fontWeight: 'bold' },
-  sender: { fontSize: 14, color: '#555' },
-  body: { marginTop: 5 },
-  date: { marginTop: 10, fontSize: 12, color: 'gray', textAlign: 'right' },
+  container: {
+    flex: 1,
+    backgroundColor: '#F1F5F9',
+  },
+  messageList: {
+    padding: 15,
+  },
+  messageBubble: {
+    padding: 12,
+    borderRadius: 16,
+    marginVertical: 6,
+    maxWidth: '80%',
+  },
+  fromMe: {
+    backgroundColor: '#4ECDC4',
+    alignSelf: 'flex-end',
+  },
+  fromOther: {
+    backgroundColor: '#fff',
+    alignSelf: 'flex-start',
+    borderWidth: 1,
+    borderColor: '#ccc',
+  },
+  messageText: {
+    color: '#222',
+    fontSize: 15,
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    padding: 12,
+    borderTopWidth: 1,
+    borderColor: '#ccc',
+    backgroundColor: '#fff',
+    alignItems: 'center',
+  },
+  input: {
+    flex: 1,
+    padding: 12,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 20,
+    marginRight: 10,
+    fontSize: 16,
+  },
+  sendButton: {
+    backgroundColor: '#1A535C',
+    padding: 10,
+    borderRadius: 50,
+  },
 });

@@ -1,54 +1,60 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
-import Holiday from '../models/Holiday';
+// src/screens/HolidayListScreen.js
+import React from 'react';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
+
+const holidays = [
+  { date: '2025-01-01', name: 'New Year\'s Day 🎉' },
+  { date: '2025-04-18', name: 'Good Friday ✝️' },
+  { date: '2025-05-01', name: 'Labor Day 💪' },
+  { date: '2025-06-21', name: 'Midsummer 🌞' },
+  { date: '2025-12-24', name: 'Christmas Eve 🎄' },
+  { date: '2025-12-25', name: 'Christmas Day 🎁' },
+];
 
 export default function HolidayListScreen() {
-  const [holidays, setHolidays] = useState([]);
-
-  useEffect(() => {
-    const data = [
-      new Holiday('2025-04-19', 'Spring Festival', 'Celebrating the season of renewal.'),
-      new Holiday('2025-05-01', 'Labour Day', 'Honoring workers and their contributions.'),
-      new Holiday('2025-06-21', 'Midsummer Holiday', 'Traditional Finnish midsummer break.'),
-    ];
-    setHolidays(data);
-  }, []);
-
-  const renderItem = ({ item }) => (
-    <View style={styles.card}>
-      <Text style={styles.date}>📅 {item.getFormattedDate()}</Text>
-      <Text style={styles.title}>{item.title}</Text>
-      <Text style={styles.desc}>{item.description}</Text>
-    </View>
-  );
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>🗓️ Holiday List</Text>
-      <FlatList
-        data={holidays}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={renderItem}
-        contentContainerStyle={styles.list}
-      />
-    </View>
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.title}>🎉 Upcoming Holidays</Text>
+      {holidays.map((holiday, index) => (
+        <View key={index} style={styles.card}>
+          <Text style={styles.holidayName}>{holiday.name}</Text>
+          <Text style={styles.holidayDate}>{holiday.date}</Text>
+        </View>
+      ))}
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: '#fefce8' },
-  heading: { fontSize: 24, fontWeight: 'bold', textAlign: 'center', color: '#78350f', marginBottom: 20 },
-  list: { paddingBottom: 50 },
+  container: {
+    padding: 16,
+    paddingBottom: 100,
+    backgroundColor: '#F1F5F9',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#1A535C',
+    marginBottom: 20,
+  },
   card: {
-    padding: 20,
-    backgroundColor: '#fff',
-    borderRadius: 14,
-    marginBottom: 12,
-    borderLeftWidth: 5,
-    borderLeftColor: '#fbbf24',
+    backgroundColor: '#ffffff',
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 15,
+    shadowColor: '#000',
+    shadowOpacity: 0.08,
+    shadowRadius: 5,
     elevation: 3,
   },
-  date: { fontSize: 14, color: '#92400e', marginBottom: 5 },
-  title: { fontSize: 18, fontWeight: '600', color: '#78350f' },
-  desc: { fontSize: 15, color: '#92400e', marginTop: 3 },
+  holidayName: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#333',
+  },
+  holidayDate: {
+    fontSize: 14,
+    color: '#777',
+    marginTop: 6,
+  },
 });
